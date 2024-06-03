@@ -1,7 +1,8 @@
 import { useState } from "react";
 import "./App.css";
 import axios from "axios";
-import ReactMarkdown from "react-markdown";
+// import ReactMarkdown from "react-markdown";
+import MarkdownRenderer from "./components/Mark-down-renderer";
 
 function App() {
   const [question, setQuestion] = useState("");
@@ -23,6 +24,8 @@ function App() {
         },
       });
 
+      console.log(response["data"]["candidates"][0]["content"]["parts"][0]["text"]);
+
       setAnswer(
         response["data"]["candidates"][0]["content"]["parts"][0]["text"]
       );
@@ -37,6 +40,23 @@ function App() {
   return (
     <>
       <div className="bg-white h-screen p-3">
+        {answer && (
+          <div className="h-auto w-full flex justify-center items-center">
+            <div className="h-auto w-[70%] bg-gray-50 p-4 rounded mb-4">
+              <MarkdownRenderer markdown={answer} />
+            </div>
+          </div>
+        )}
+
+        {/* <textarea
+        value={answer}
+        placeholder="Waiting for the answer..."
+        rows={20}
+        cols={80}
+        >
+
+        </textarea> */}
+
         <form
           onSubmit={generateAnswer}
           className="w-full md:w-2/3 m-auto text-center rounded bg-gray-50 py-2"
@@ -59,9 +79,9 @@ function App() {
             Generate answer
           </button>
         </form>
-        <div className="w-full md:w-2/3 m-auto text-center rounded bg-gray-50 my-1">
+        {/* <div className="w-full md:w-2/3 m-auto text-center rounded bg-gray-50 my-1">
           <ReactMarkdown className="p-3">{answer}</ReactMarkdown>
-        </div>
+        </div> */}
       </div>
     </>
   );
